@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 import { Route,Switch,Redirect } from "react-router-dom";
 
 import Signin from "./Auth";
-import Dashboard from './Page/Dashboard';
+import Layout from './Template/Layout';
 
 function App() {
 
@@ -29,7 +29,7 @@ function App() {
     console.log("Ini adalah sign out");
   } 
 
-  const IsAuth = false;
+  const IsAuth = true;
 
   if(IsAuth){
     console.log("TRUE");
@@ -44,7 +44,7 @@ function App() {
       <Route path="/sign-out" component={SignOut} />
 
       {(IsAuth) ? (
-        <Dashboard />
+        <Layout />
       ) : (
         <Redirect to="/sign-in" />
       )}

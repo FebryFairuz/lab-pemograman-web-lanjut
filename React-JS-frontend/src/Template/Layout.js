@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Logo from "../media/logo/logo-ibik-web.png"
 
 export default class Layout extends Component {
     render() {
@@ -10,9 +11,7 @@ export default class Layout extends Component {
                             <div className="container d-flex align-items-stretch justify-content-between">
                                 <div className="d-flex align-items-stretch mr-3">
                                     <div className="header-logo">
-                                        <a>
-                                            Logo
-                                        </a>
+                                        <img src={Logo} alt="IBIK" className="w-50 bg-white p-2 rounded" />
                                     </div>
                                     <div className="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                                         <div id="kt_header_menu" className="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
