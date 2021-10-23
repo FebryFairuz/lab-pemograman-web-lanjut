@@ -2,11 +2,11 @@ const authReducer = (state, action) =>{
     console.log(action);
     switch(action.type){
         case "SIGN_IN":
-            console.log(action.param);
+            localStorage.setItem("AuthToken",action.param);
         break; 
-        //return action.payload;
         
         case "SIGN_OUT":
+            localStorage.removeItem("AuthToken");
             window.location = '/sign-in'; 
             break;
         default:

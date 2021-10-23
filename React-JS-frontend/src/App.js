@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import jwt_decode from "jwt-decode";
 //add ini
 import {useState,useEffect}  from 'react';
 import {useDispatch} from 'react-redux';
@@ -29,13 +30,20 @@ function App() {
     console.log("Ini adalah sign out");
   } 
 
-  const IsAuth = true;
 
-  if(IsAuth){
-    console.log("TRUE");
+  const IsAuth = localStorage.getItem("AuthToken");
+  const decodeAuth = jwt_decode(IsAuth);
+  console.log(decodeAuth);
+  
+  const [isExpired,setIsExpired] = useState(false);
+  const today = new Date(); //current time
+  const expiredTime = new Date(decodeAuth.result.Expired); //time expired
+  if(today > expiredTime){ //compare today dgn expiredtime
+    setIsExpired(true);
   }else{
-    console.log("FALSE");
+    setIsExpired(false);
   }
+  
 
   //JSX
   return (
@@ -43,7 +51,7 @@ function App() {
       <Route path="/sign-in" component={Signin} />
       <Route path="/sign-out" component={SignOut} />
 
-      {(IsAuth) ? (
+      {(IsAuth && isExpired) ? (
         <Layout />
       ) : (
         <Redirect to="/sign-in" />

@@ -8,6 +8,10 @@ export function Signin() {
 
     const [postData,setPostData] = useState({username:'',password:''});
     const dispatch = useDispatch();
+
+    //message info
+    const [message,setMessage] = useState("");
+    const [labelSignIN,setLabelSignIN] = useState("Sign In");
     
     const submitPost = (e) =>{
         e.preventDefault();
@@ -31,7 +35,26 @@ export function Signin() {
 
         axios(config)
             .then(function (response) {
-            console.log(JSON.stringify(response.data));
+                setLabelSignIN("processing...");
+            //store ke dalam redux
+                if(response.data.return){ // true
+                    let publicKey = "PWL123!@#$";
+                    let encription = sign(response.data,publicKey);
+                    dispatch({type:"SIGN_IN", param:encription});
+                    //setLabelSignIN("Sign In");
+                    setMessage(response.data.message);
+                    //redirect / reload page
+                    setTimeout(() => {
+                        //window.location.reload();
+                        window.location.href = "/";
+                    }, 1000);
+
+                }else{
+                    setLabelSignIN("Sign In");
+                    setMessage(response.data.message);
+                }
+            //end store ke redux
+                
         })
             .catch(function (error) {
             console.log(error);
@@ -54,6 +77,14 @@ export function Signin() {
                                 <h3>Sign In To Admin</h3>
                                 <div className="text-muted font-weight-bold">Enter your details to login to your account:</div>
                             </div>
+
+                            {(message) ? (
+                                <div className="alert alert-danger">
+                                    <p>{message}</p>
+                                </div>
+                            ) : ''}
+                            
+
                             <form className="form fv-plugins-bootstrap fv-plugins-framework" id="kt_login_signin_form" novalidate="novalidate"  onSubmit={submitPost} autoComplete="off" >
                                 <div className="form-group mb-5 fv-plugins-icon-container">
                                     <input type="text" name="Username" className="form-control h-auto form-control-solid py-4 px-8" value={postData.username} onChange={(e)=>setPostData({...postData, username:e.target.value })} placeholder="Username" />
@@ -62,7 +93,7 @@ export function Signin() {
                                     <input type="password" name="Password" className="form-control h-auto form-control-solid py-4 px-8" value={postData.password} onChange={(e)=>setPostData({...postData, password:e.target.value })} placeholder="Password" />
                                 <div className="fv-plugins-message-container"></div></div>
                                 
-                                <button id="kt_login_signin_submit" className="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Sign In</button>
+                                <button id="kt_login_signin_submit" className="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">{labelSignIN}</button>
                                 <div></div>
                             </form>
                         </div>
