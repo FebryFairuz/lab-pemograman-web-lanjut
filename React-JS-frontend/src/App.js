@@ -35,14 +35,6 @@ function App() {
   const decodeAuth = jwt_decode(IsAuth);
   console.log(decodeAuth);
   
-  const [isExpired,setIsExpired] = useState(false);
-  const today = new Date(); //current time
-  const expiredTime = new Date(decodeAuth.result.Expired); //time expired
-  if(today > expiredTime){ //compare today dgn expiredtime
-    setIsExpired(true);
-  }else{
-    setIsExpired(false);
-  }
   
 
   //JSX
@@ -51,7 +43,7 @@ function App() {
       <Route path="/sign-in" component={Signin} />
       <Route path="/sign-out" component={SignOut} />
 
-      {(IsAuth && isExpired) ? (
+      {(IsAuth) ? (
         <Layout />
       ) : (
         <Redirect to="/sign-in" />
